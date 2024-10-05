@@ -12,6 +12,7 @@ TEST(TBitField, can_get_length)
   TBitField bf(3);
 
   EXPECT_EQ(3, bf.GetLength());
+
 }
 
 TEST(TBitField, new_bitfield_is_set_to_zero)
@@ -308,4 +309,42 @@ TEST(TBitField, bitfields_with_different_bits_are_not_equal)
   bf2.SetBit(2);
 
   EXPECT_NE(bf1, bf2);
+}
+
+TEST(TBitField, double_bit_clearing)
+{
+    const int size = 4;
+    TBitField bf1(size), bf2(size);
+
+    // bf1 = 0110
+    bf1.SetBit(1);
+    bf1.SetBit(2);
+
+    // bf2 = 0010
+    bf2.SetBit(1);
+
+    // bf1 = 0010
+    bf1.ClrBit(2);
+    bf1.ClrBit(2);
+
+    EXPECT_EQ(bf1, bf2);
+}
+
+TEST(TBitField, double_negation)
+{
+    const int size = 5;
+    TBitField bf1(size), bf2(size);
+
+    // bf1 = 10100
+    bf1.SetBit(2);
+    bf1.SetBit(4);
+
+    // bf2 = 10100
+    bf2.SetBit(2);
+    bf2.SetBit(4);
+
+    bf1 = ~bf1;
+    bf1 = ~bf1;
+
+    EXPECT_EQ(bf1, bf2);
 }

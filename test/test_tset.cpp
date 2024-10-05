@@ -295,3 +295,15 @@ TEST(TSet, check_negation_operator)
 
   EXPECT_EQ(expSet, set1);
 }
+
+TEST(TSet, throws_when_out_of_range_InsElem)
+{
+	TSet set1(8);
+	ASSERT_ANY_THROW(set1.InsElem(15));
+}
+
+TEST(TSet, throws_when_out_of_range_DelElem)
+{
+	TSet set1(67);
+	ASSERT_ANY_THROW(set1.DelElem(67));
+}
