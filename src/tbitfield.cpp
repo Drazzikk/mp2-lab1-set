@@ -1,3 +1,9 @@
+// ННГУ, ВМК, Курс "Методы программирования-2", С++, ООП
+//
+// tbitfield.cpp - Copyright (c) Гергель В.П. 07.05.2001
+//   Переработано для Microsoft Visual Studio 2008 Сысоевым А.В. (19.04.2015)
+//
+// 
 // Битовое поле
 
 #include "tbitfield.h"
@@ -5,6 +11,7 @@
 #include <stdexcept>
 #include "iostream"
 #include "cstring"
+#include "algorithm"
 using namespace std;
 
 
@@ -38,6 +45,12 @@ TBitField::TBitField(const TBitField &bf) // конструктор копиро
     BitLen = bf.BitLen;
     MemLen = bf.MemLen;
     pMem = new TELEM[MemLen];
+
+    if (pMem == nullptr)
+    {
+        throw domain_error("domain_error");
+    }
+
     memcpy(pMem, bf.pMem, MemLen * sizeof(TELEM));
 
 }
@@ -113,15 +126,22 @@ int TBitField::GetBit(const int n) const // получить значение б
 
 TBitField& TBitField::operator=(const TBitField &bf) // присваивание
 {
-    if (*this == bf)
-        return *this;
+    if (this != &bf)
+    {
+        if (MemLen != bf.MemLen)
+        {
+            delete[] pMem;
+            pMem = new TELEM[MemLen];
+            if (pMem == nullptr)
+            {
+                throw domain_error("domain_error");
+            }
+        }
 
-    BitLen = bf.BitLen;
-    MemLen = bf.MemLen;
-
-    pMem = new TELEM[MemLen];
-    memcpy(pMem, bf.pMem, MemLen * sizeof(TELEM));
-
+        BitLen = bf.BitLen;
+        memcpy(pMem, bf.pMem, MemLen * sizeof(TELEM));
+    }
+    
     return *this;
 }
 

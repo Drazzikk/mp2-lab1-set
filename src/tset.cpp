@@ -1,3 +1,8 @@
+// ННГУ, ВМК, Курс "Методы программирования-2", С++, ООП
+//
+// tset.cpp - Copyright (c) Гергель В.П. 04.10.2001
+//   Переработано для Microsoft Visual Studio 2008 Сысоевым А.В. (19.04.2015)
+//
 // Множество - реализация через битовые поля
 
 #include "tset.h"
@@ -112,13 +117,8 @@ TSet TSet::operator*(const TSet &s) // пересечение
 
 TSet TSet::operator~(void) // дополнение
 {
-    TBitField newBitField(MaxPower);
-
-    for (int i = 0; i < MaxPower; i++)
-        if (!IsMember(i))
-            newBitField.SetBit(i);
-
-    return TSet(newBitField);
+    TSet result(~BitField);
+    return result;
 }
 
 // перегрузка ввода/вывода
