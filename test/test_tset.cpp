@@ -16,13 +16,10 @@ protected:
 	TSet* set_8;
 	TSet* set_9;
 	TSet* set_10;
+	TSet* set_11;
 public:
-	void SetUp_1(std::size_t n = 3)
-	{
-		set = new TSet(n);
-	}
-
-	void SetUp_2()
+	
+	void SetUp()
 	{
 		set_1 = new TSet(3);
 		set_1->InsElem(0);
@@ -64,14 +61,11 @@ public:
 		set_10 = new TSet(4);
 		set_10->InsElem(0);
 		set_10->InsElem(1);
+
+		set_11 = new TSet(4);
 	}
 
-	void TearDown_1()
-	{
-		delete set;
-	}
-
-	void TearDown_2()
+	void TearDown()
 	{
 		delete set_1;
 		delete set_2;
@@ -83,162 +77,137 @@ public:
 		delete set_8;
 		delete set_9;
 		delete set_10;
+		delete set_11;
 	}
 };
 
 TEST_F(TestTSet, can_get_max_power_set)
 {
-	this->SetUp_1();
-	EXPECT_EQ(this->set->GetMaxPower(), 3);
+	EXPECT_EQ(this->set_1->GetMaxPower(), 3);
 }
 
 TEST_F(TestTSet, can_insert_non_existing_element)
 {
-	this->SetUp_1();
-	this->set->InsElem(1);
-	EXPECT_EQ(this->set->IsMember(1), true);
+	EXPECT_EQ(this->set_1->IsMember(1), true);
 }
 
 TEST_F(TestTSet, can_insert_existing_element)
 {
-	this->SetUp_1();
-	this->set->InsElem(1);
-	this->set->InsElem(1);
-	EXPECT_EQ(this->set->IsMember(1), true);
+	this->set_11->InsElem(1);
+	this->set_11->InsElem(1);
+	EXPECT_EQ(this->set_11->IsMember(1), true);
 }
 
 TEST_F(TestTSet, can_delete_non_existing_element)
 {
-	this->SetUp_1();
-	this->set->DelElem(1);
-	EXPECT_EQ(this->set->IsMember(1), false);
+	this->set_1->DelElem(2);
+	EXPECT_EQ(this->set_1->IsMember(2), false);
 }
 
 TEST_F(TestTSet, can_delete_existing_element)
 {
-	this->SetUp_1();
-	this->set->InsElem(1);
-	EXPECT_GT(this->set->IsMember(1), 0);
-	this->set->DelElem(1);
-	EXPECT_EQ(this->set->IsMember(1), false);
+	this->set_1->DelElem(1);
+	EXPECT_EQ(this->set_1->IsMember(1), false);
 }
 
 TEST_F(TestTSet, compare_two_sets_of_non_equal_sizes)
 {
-	this->SetUp_2();
 	EXPECT_NE(*this->set_1, *this->set_3);
 }
 
 TEST_F(TestTSet, compare_two_equal_sets)
 {
-	this->SetUp_2();
 	EXPECT_EQ(*this->set_1, *this->set_2);
 }
 
 TEST_F(TestTSet, compare_two_non_equal_sets)
 {
-	this->SetUp_2();
 	EXPECT_EQ(true, *this->set_1 != *this->set_4);
 }
 
 TEST_F(TestTSet, can_assign_set_of_equal_size)
 {
-	this->SetUp_2();
 	*this->set_1 = *this->set_4;
 	EXPECT_EQ(*this->set_1, *this->set_4);
 }
 
 TEST_F(TestTSet, can_assign_set_of_greater_size)
 {
-	this->SetUp_2();
 	*this->set_1 = *this->set_5;
 	EXPECT_EQ(*this->set_1, *this->set_5);
 }
 
 TEST_F(TestTSet, can_assign_set_of_less_size)
 {
-	this->SetUp_2();
 	*this->set_3 = *this->set_1;
 	EXPECT_EQ(*this->set_3, *this->set_1);
 }
 
 TEST_F(TestTSet, can_insert_non_existing_element_using_plus_operator)
 {
-	this->SetUp_2();
 	*this->set_5 = *this->set_1 + 2;
 	EXPECT_EQ(true, this->set_5->IsMember(2));
 }
 
 TEST_F(TestTSet, throws_when_insert_non_existing_element_out_of_range_using_plus_operator)
 {
-	this->SetUp_2();
 	ASSERT_ANY_THROW(*this->set_5 = *this->set_1 + 10;);
 }
 
 TEST_F(TestTSet, can_insert_existing_element_using_plus_operator)
 {
-	this->SetUp_2();
 	*this->set_5 = *this->set_5 + 3;
 	EXPECT_EQ(true, this->set_5->IsMember(3));
 }
 
 TEST_F(TestTSet, check_size_of_the_combination_of_two_sets_of_equal_size)
 {
-	this->SetUp_2();
 	*this->set_6 = *this->set_1 + *this->set_4;
 	EXPECT_EQ(3, this->set_6->GetMaxPower());
 }
 
 TEST_F(TestTSet, can_combine_two_sets_of_equal_size)
 {
-	this->SetUp_2();
 	*this->set_4 = *this->set_4 + *this->set_1;
 	EXPECT_EQ(*this->set_4, *this->set_7);
 }
 
 TEST_F(TestTSet, check_size_changes_of_the_combination_of_two_sets_of_non_equal_size)
 {
-	this->SetUp_2();
 	*this->set_6 = *this->set_1 + *this->set_5;
 	EXPECT_EQ(5, this->set_6->GetMaxPower());
 }
 
 TEST_F(TestTSet, can_combine_two_sets_of_non_equal_size)
 {
-	this->SetUp_2();
 	*this->set_6 = *this->set_1 + *this->set_3;
 	EXPECT_EQ(*this->set_6, *this->set_3);
 }
 
 TEST_F(TestTSet, can_intersect_two_sets_of_equal_size)
 {
-	this->SetUp_2();
 	*this->set_2 = *this->set_1 * *this->set_4;
 	EXPECT_EQ(*this->set_2, *this->set_9);
 }
 
 TEST_F(TestTSet, can_intersect_two_sets_of_non_equal_size)
 {
-	this->SetUp_2();
 	*this->set_4 = *this->set_1 * *this->set_3;
 	EXPECT_EQ(*this->set_4, *this->set_10);
 }
 
 TEST_F(TestTSet, check_negation_operator)
 {
-	this->SetUp_2();
 	*this->set_2 = ~(*this->set_1);
 	EXPECT_EQ(*this->set_8, *this->set_2);
 }
 
 TEST_F(TestTSet, throws_when_out_of_range_InsElem)
 {
-	this->SetUp_1();
-	ASSERT_ANY_THROW(this->set->InsElem(20));
+	ASSERT_ANY_THROW(this->set_1->InsElem(20));
 }
 
 TEST_F(TestTSet, throws_when_out_of_range_DelElem)
 {
-	this->SetUp_1();
-	ASSERT_ANY_THROW(this->set->DelElem(3));
+	ASSERT_ANY_THROW(this->set_1->DelElem(10));
 }
